@@ -1,6 +1,33 @@
+![Python 3.11+](https://img.shields.io/badge/Python-3.11%2B-blue)
+![Linux Only](https://img.shields.io/badge/OS-Linux%20Only-orange)
+![MIT License](https://img.shields.io/badge/License-MIT-green)
+
 # Canary - File Tripwire System
 
 A Linux-only file tripwire system that monitors specific files (honey tokens) and alerts when they are accessed, modified, moved, or deleted.
+
+---
+
+## 🚀 60-Second Setup
+
+Get Canary running in under a minute:
+
+```bash
+# 1. Install
+pip install git+https://github.com/SHASHANK-1527/linux-canary-tripwire.git
+
+# 2. Initialize
+canary init
+
+# 3. Add a file to monitor
+echo "test" > /tmp/test.txt
+canary add /tmp/test.txt
+
+# 4. Start monitoring
+canary watch
+```
+
+That's it! Canary will now alert you when `/tmp/test.txt` is accessed, modified, or deleted.
 
 ## Features
 
@@ -21,7 +48,17 @@ A Linux-only file tripwire system that monitors specific files (honey tokens) an
 - Linux operating system
 - pip package manager
 
-### Install from Source
+### Install Directly via pip
+
+Install from GitHub in one command:
+
+```bash
+pip install git+https://github.com/SHASHANK-1527/linux-canary-tripwire.git
+```
+
+This creates a console command `canary` that can be run from anywhere.
+
+### Install from Source (Development)
 
 Clone the repository and install in development mode:
 
@@ -30,7 +67,29 @@ cd /path/to/Project_Canary_file
 pip install -e .
 ```
 
-This creates a console command `canary` that can be run from anywhere.
+### Uninstall
+
+Remove Canary and all configuration:
+
+```bash
+# Uninstall the package
+pip uninstall canary
+
+# (Optional) Remove configuration and logs
+rm -rf ~/.canary/
+```
+
+### Verify Installation
+
+Confirm Canary is installed correctly:
+
+```bash
+# Check if canary command is available
+which canary
+
+# Display help and version
+canary --help
+```
 
 ## Quick Start
 
@@ -412,6 +471,24 @@ $ tail -3 ~/.canary/logs/events.log
 {"timestamp": "2026-03-01T14:23:45.123Z", "event_type": "accessed", "file_path": "/home/kali/passwords.txt", "username": "kali"}
 {"timestamp": "2026-03-01T14:23:47.456Z", "event_type": "modified", "file_path": "/etc/shadow", "username": "root", "file_hash_sha256": "abc123..."}
 {"timestamp": "2026-03-01T14:23:50.789Z", "event_type": "deleted", "file_path": "/home/kali/passwords.txt", "username": "kali"}
+```
+
+### Background Monitoring
+
+Run Canary in the background and log output to a file:
+
+```bash
+# Start monitoring in background
+nohup canary watch > canary.log 2>&1 &
+
+# View the background process ID
+echo $!
+
+# Monitor the log in real-time
+tail -f canary.log
+
+# Stop background monitoring
+pkill -f "canary watch"
 ```
 
 ## Technologies Used
